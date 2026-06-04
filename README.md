@@ -44,3 +44,5 @@ Les workflows GitHub Actions ne sont **pas** fournis. A vous de les creer dans
   **GitHub Pages**.
 
 > L'artifact a publier est le dossier `dist/` produit par `npm run build`.
+
+<!-- demo CI/CD automation -->
