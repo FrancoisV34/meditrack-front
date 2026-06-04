@@ -1,0 +1,17 @@
+version: 2
+# Palier 5 — durcissement supply chain : surveillance des dépendances npm
+# et des actions GitHub utilisées dans les workflows.
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    labels:
+      - dependencies

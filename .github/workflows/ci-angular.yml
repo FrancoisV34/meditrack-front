@@ -1,0 +1,37 @@
+name: CI Angular
+
+# Palier 2 — CI Angular : matrice multi-Node, tests headless, build prod, artifact dist.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    name: Build & Test (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Setup Node + cache npm
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Install (npm ci)
+        run: npm ci
+      - name: Tests unitaires headless (Karma / ChromeHeadlessCI)
+        run: npm run test:ci
+      - name: Build production
+        run: npm run build -- --configuration production
+      - name: Upload artifact dist
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dist-node-${{ matrix.node-version }}
+          path: dist/
+          if-no-files-found: error
